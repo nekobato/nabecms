@@ -24,6 +24,6 @@
     "@nekobato/nabecms-cli": "workspace:*",
     "drizzle-kit": "0.31.11",
     "npm-run-all2": "9.0.4",
-    "wrangler": "4.152.0"
+    "wrangler": "4.156.0"
   }
 }
