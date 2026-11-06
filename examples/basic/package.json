@@ -19,10 +19,10 @@
   },
   "devDependencies": {
     "@nekobato/nabecms-cli": "workspace:*",
-    "@types/node": "26.6.5",
+    "@types/node": "26.6.6",
     "drizzle-kit": "0.31.11",
     "typescript": "7.0.2",
-    "wrangler": "4.152.0"
+    "wrangler": "4.156.0"
   },
   "engines": {
     "node": "^24.22.1 || ^26.12.1",
