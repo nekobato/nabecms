@@ -1,0 +1,43 @@
+{
+  "name": "@nekobato/nabecms-cli",
+  "version": "0.1.0-alpha.1",
+  "description": "Node.js maintenance CLI for NabeCMS host apps.",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekobato/nabecms.git",
+    "directory": "packages/nabecms-cli"
+  },
+  "bugs": {
+    "url": "https://github.com/nekobato/nabecms/issues"
+  },
+  "homepage": "https://github.com/nekobato/nabecms#readme",
+  "bin": {
+    "nabecms": "./bin/nabecms.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "typescript": "npm:@typescript/typescript6@6.0.2"
+  },
+  "peerDependencies": {
+    "wrangler": "^4.118.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": "^24.22.1 || ^26.12.1",
+    "pnpm": ">=11"
+  }
+}

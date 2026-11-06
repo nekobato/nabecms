@@ -1,0 +1,13 @@
+{
+  "algorithm": "sha256",
+  "source": "packages/create-nabecms/template/basic/migrations@0.0.1",
+  "files": {
+    "0000_wide_imperial_guard.sql": "2f8c759d3e5f657e04b6b28df2e90251d415b6d214f467d30758982e6e61f4d2",
+    "0001_auth_foundation.sql": "ddac1395006c43d447e1823ba7c5125735a2d8189fc8185c666c82864f304b12",
+    "0002_melodic_misty_knight.sql": "6ec4d6216f2807c521c1d854ecc4e7c9b9547b8d19f783b92f3ac4a6b7fe6c1e",
+    "0003_early_avengers.sql": "dd0009e437d3e0f976a769c069a097b0499262e48d54a28c159c1c1d324341bc",
+    "0004_align_users_auth_columns.sql": "5af651c72d34d402f7090dd946fd7d947c89e95f256587c78b9e895f24000ef1",
+    "0005_cuddly_ogun.sql": "131cecb68dcb935a35fad17dcc224b70f78b17eba0147e29235b52dc5dfaa0e8",
+    "0006_windy_cardiac.sql": "67d87b7696fb5ce31824e568ccf8145aa2240057a4c7d750b7609d32ef37b71e"
+  }
+}

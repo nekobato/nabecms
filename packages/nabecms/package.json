@@ -1,0 +1,58 @@
+{
+  "name": "@nekobato/nabecms",
+  "version": "0.1.0-alpha.1",
+  "description": "Public NabeCMS facade with the Worker API and built Admin assets.",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekobato/nabecms.git",
+    "directory": "packages/nabecms"
+  },
+  "bugs": {
+    "url": "https://github.com/nekobato/nabecms/issues"
+  },
+  "homepage": "https://github.com/nekobato/nabecms#readme",
+  "keywords": [
+    "nabecms",
+    "cloudflare",
+    "cms",
+    "hono"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./contracts": {
+      "types": "./src/contracts.ts",
+      "default": "./src/contracts.ts"
+    },
+    "./rpc/admin": {
+      "types": "./src/rpc/admin.ts",
+      "default": "./src/rpc/admin.ts"
+    },
+    "./rpc/contents": {
+      "types": "./src/rpc/contents.ts",
+      "default": "./src/rpc/contents.ts"
+    }
+  },
+  "files": [
+    "src",
+    "admin/dist",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@nekobato/nabecms-core": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": "^24.22.1 || ^26.12.1",
+    "pnpm": ">=11"
+  }
+}

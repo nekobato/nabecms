@@ -1,0 +1,93 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "__WORKER_NAME__",
+  "main": "src/worker.ts",
+  "compatibility_date": "2025-08-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
+  // Admin Web static files shipped by the published facade package.
+  "assets": {
+    "directory": "./node_modules/@nekobato/nabecms/admin/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true,
+  },
+  // Local namespace IDs. Replace production IDs below with positive integers
+  // that are unique within your Cloudflare account before deployment.
+  "ratelimits": [
+    {
+      "name": "AUTH_LOGIN_RATE_LIMITER",
+      "namespace_id": "10001",
+      "simple": { "limit": 10, "period": 60 },
+    },
+    {
+      "name": "AUTH_SENSITIVE_RATE_LIMITER",
+      "namespace_id": "10002",
+      "simple": { "limit": 5, "period": 60 },
+    },
+  ],
+  "vars": {
+    "WORKER_ENV": "development",
+    "ADMIN_DEV_PROXY": "false",
+    "BETTER_AUTH_URL": "http://localhost:8787",
+  },
+  // Daily cleanup at 18:00 UTC (03:00 JST).
+  "triggers": { "crons": ["0 18 * * *"] },
+  "env": {
+    "production": {
+      "triggers": { "crons": ["0 18 * * *"] },
+      // ratelimits is not inherited by named environments.
+      "ratelimits": [
+        {
+          "name": "AUTH_LOGIN_RATE_LIMITER",
+          "namespace_id": "11001",
+          "simple": { "limit": 10, "period": 60 },
+        },
+        {
+          "name": "AUTH_SENSITIVE_RATE_LIMITER",
+          "namespace_id": "11002",
+          "simple": { "limit": 5, "period": 60 },
+        },
+      ],
+      "vars": {
+        "WORKER_ENV": "production",
+        "ADMIN_DEV_PROXY": "false",
+        "BETTER_AUTH_URL": "https://example.workers.dev",
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "nabecms",
+          "database_id": "[DATABASE_ID]",
+          "migrations_dir": "./migrations",
+        },
+      ],
+      "r2_buckets": [
+        {
+          "binding": "R2",
+          "bucket_name": "nabecms-media",
+        },
+      ],
+    },
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "nabecms",
+      "database_id": "[DATABASE_ID]",
+      "migrations_dir": "./migrations",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "nabecms-media",
+    },
+  ],
+}

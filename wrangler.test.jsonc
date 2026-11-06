@@ -1,0 +1,45 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nabecms-test",
+  "main": "packages/dev/src/worker.ts",
+  "compatibility_date": "2025-08-07",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "logs": {
+      "enabled": false,
+      "invocation_logs": true,
+    },
+  },
+  // Use repository sources during tests because dist is not built in CI.
+  "assets": {
+    "directory": "./packages/nabecms-admin/public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true,
+  },
+  "vars": {
+    "WORKER_ENV": "test",
+    "ADMIN_DEV_PROXY": "false",
+    "ADMIN_DEV_PORT": "2525",
+    "AUTH_EMAIL_FROM": "no-reply@example.com",
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "test-db",
+      "database_id": "test-db",
+      "migrations_dir": "./packages/dev/migrations",
+    },
+  ],
+  "r2_buckets": [
+    {
+      "binding": "R2",
+      "bucket_name": "test-bucket",
+    },
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL_SENDER",
+    },
+  ],
+}

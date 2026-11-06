@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "paths": {
+      "@/*": ["./*"],
+      "@theme/*": ["./.vitepress/theme/*"]
+    }
+  },
+  "include": [".vitepress/**/*", "**/*.md"],
+  "exclude": ["node_modules", "dist"]
+}

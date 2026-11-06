@@ -1,0 +1,11 @@
+[
+  {
+    "name": "@cfworker/json-schema",
+    "version": "4.1.1",
+    "identifier": "MIT",
+    "licenseFile": "cfworker-json-schema-4.1.1-LICENSE.md",
+    "noticeFiles": [
+      "cfworker-json-schema-4.1.1-THIRD_PARTY_NOTICES.md"
+    ]
+  }
+]

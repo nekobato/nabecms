@@ -1,0 +1,80 @@
+{
+  "name": "@nekobato/nabecms-core",
+  "version": "0.1.0-alpha.1",
+  "description": "NabeCMS Worker runtime and public contracts for Cloudflare.",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekobato/nabecms.git",
+    "directory": "packages/nabecms-core"
+  },
+  "bugs": {
+    "url": "https://github.com/nekobato/nabecms/issues"
+  },
+  "homepage": "https://github.com/nekobato/nabecms#readme",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./contracts": {
+      "types": "./src/contracts/index.ts",
+      "default": "./src/contracts/index.ts"
+    },
+    "./rpc/admin": {
+      "types": "./src/rpc/admin.ts",
+      "default": "./src/rpc/admin.ts"
+    },
+    "./rpc/contents": {
+      "types": "./src/rpc/contents.ts",
+      "default": "./src/rpc/contents.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md",
+    "README.ja.md",
+    "LICENSE",
+    "!src/**/*.spec.ts",
+    "!src/**/*.test.ts",
+    "!src/**/__tests__/**"
+  ],
+  "scripts": {
+    "format": "prettier --write src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@cfworker/json-schema": "4.1.1",
+    "bcryptjs": "3.0.3",
+    "better-auth": "1.7.13",
+    "drizzle-orm": "0.45.4",
+    "hono": "4.13.14",
+    "jose": "6.2.13",
+    "mustache": "4.2.0",
+    "nanoid": "6.0.2",
+    "zod": "4.6.7"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "1.4.7",
+    "@types/mustache": "4.2.6",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "@typescript-eslint/parser": "8.72.0",
+    "@vitest/ui": "5.0.5",
+    "drizzle-kit": "0.31.11",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "vitest": "5.0.5",
+    "wrangler": "4.152.0"
+  }
+}

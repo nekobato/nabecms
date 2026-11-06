@@ -1,0 +1,45 @@
+{
+  "name": "create-nabecms",
+  "version": "0.1.0-alpha.1",
+  "description": "Create a NabeCMS host app with npm create nabecms@next.",
+  "type": "module",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekobato/nabecms.git",
+    "directory": "packages/create-nabecms"
+  },
+  "bugs": {
+    "url": "https://github.com/nekobato/nabecms/issues"
+  },
+  "homepage": "https://github.com/nekobato/nabecms#readme",
+  "keywords": [
+    "nabecms",
+    "create",
+    "starter",
+    "cloudflare",
+    "cms"
+  ],
+  "bin": {
+    "create-nabecms": "./bin/create-nabecms.mjs"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "template",
+    "README.md",
+    "README.ja.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "engines": {
+    "node": "^24.22.1 || ^26.12.1",
+    "pnpm": ">=11"
+  }
+}

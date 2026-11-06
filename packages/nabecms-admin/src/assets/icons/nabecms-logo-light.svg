@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1254 1254" role="img" aria-labelledby="nabecms-logo-light-title">
+  <title id="nabecms-logo-light-title">NabeCMS logo</title>
+  <defs>
+    <linearGradient id="nabe-flame-gradient" x1="631" x2="631" y1="666" y2="982" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff7914" />
+      <stop offset="1" stop-color="#f45d22" />
+    </linearGradient>
+    <mask id="nabe-pot-cutout" maskUnits="userSpaceOnUse">
+      <rect width="1254" height="1254" fill="#fff" />
+      <path
+        fill="#000"
+        d="M589 652C607 655 631 673 648 690C672 714 685 755 685 789C685 810 678 832 672 850C678 855 686 855 696 849C710 841 718 819 722 807C724 801 730 799 736 805C749 819 758 854 760 890C763 928 750 959 729 980H526C508 957 497 929 494 904C491 876 499 846 518 814C532 791 555 770 567 753C582 729 590 706 588 683C587 671 583 660 589 652Z"
+      />
+    </mask>
+  </defs>
+  <g mask="url(#nabe-pot-cutout)">
+    <rect x="539" y="234" width="181" height="91" rx="45.5" fill="#fff" />
+    <rect x="580" y="307" width="100" height="48" fill="#fff" />
+    <path fill="#fff" d="M295 486c38-84 166-137 334-137 169 0 298 53 330 138 4 10 2 19-3 25-5 7-13 10-22 10H321c-9 0-17-4-22-11s-6-16-4-25Z" />
+    <path
+      fill="#fff"
+      d="M294 532h665c13 0 24 11 24 24v21l45-12c32-8 64 16 64 49 0 23-16 43-38 49l-71 18v112c0 103-84 186-187 186H458c-103 0-187-83-187-186V681l-71-18c-22-6-38-26-38-49 0-33 32-57 64-49l45 12v-21c0-13 10-24 23-24Z"
+    />
+  </g>
+  <path
+    fill="url(#nabe-flame-gradient)"
+    d="M598 668C614 675 634 689 648 708C669 736 678 775 670 812C666 829 658 848 663 857C668 865 677 868 688 866C704 862 720 841 728 821C742 845 748 875 747 911C746 938 735 962 709 978L661 980C670 961 668 941 660 927C652 918 641 913 632 901C624 891 623 879 623 871C615 875 605 886 596 900C586 918 582 945 596 980H555C536 976 524 959 514 936C506 916 505 891 509 868C513 843 528 817 549 793C572 766 592 739 599 710C602 692 599 675 598 668Z"
+  />
+</svg>

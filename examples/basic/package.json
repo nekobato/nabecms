@@ -1,0 +1,31 @@
+{
+  "name": "@nekobato/nabecms-example-basic",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "pnpm nabecms:migrate --remote --env production && wrangler deploy --minify --env production",
+    "db:generate": "drizzle-kit generate --config drizzle.config.ts && pnpm nabecms:bundle-migrations",
+    "db:migrate:local": "pnpm nabecms:migrate --local",
+    "db:migrate:remote": "pnpm nabecms:migrate --remote --env production",
+    "db:reset:local": "rm -rf .wrangler/state && pnpm nabecms:migrate --local",
+    "typecheck": "wrangler types && tsc -p tsconfig.json --noEmit",
+    "nabecms:doctor": "nabecms doctor",
+    "nabecms:migrate": "nabecms migrate",
+    "nabecms:bundle-migrations": "nabecms bundle-migrations"
+  },
+  "dependencies": {
+    "@nekobato/nabecms": "workspace:*"
+  },
+  "devDependencies": {
+    "@nekobato/nabecms-cli": "workspace:*",
+    "@types/node": "26.6.5",
+    "drizzle-kit": "0.31.11",
+    "typescript": "7.0.2",
+    "wrangler": "4.152.0"
+  },
+  "engines": {
+    "node": "^24.22.1 || ^26.12.1",
+    "pnpm": ">=11"
+  }
+}

@@ -1,0 +1,20 @@
+ignoreWorkspaceRootCheck: true
+engineStrict: true
+blockExoticSubdeps: true
+strictDepBuilds: true
+
+allowBuilds:
+  "@parcel/watcher": true
+  esbuild: true
+  sharp: true
+  workerd: true
+
+overrides:
+  "brace-expansion@>=2.0.0 <2.1.7": 2.1.7
+  "immutable@<5.1.8": 5.1.9
+  "linkify-it@<5.0.2": 5.0.2
+  "sharp@<0.35.5": 0.35.5
+  "shell-quote@>=1.8.4 <1.11.0": 1.11.0
+  "undici@>=7.0.0 <7.30.1": 7.30.1
+  "undici@>=8.0.0 <8.12.2": 8.12.2
+  "zod@>=4.0.0 <4.6.6": 4.6.6

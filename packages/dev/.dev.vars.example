@@ -1,0 +1,6 @@
+# Required for admin auth
+BOOTSTRAP_SECRET=replace-with-random-secret
+JWT_SECRET=replace-with-random-secret
+
+# Optional: required when BETTER_AUTH_URL enables local Better Auth sessions
+BETTER_AUTH_SECRET=replace-with-random-secret

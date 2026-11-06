@@ -1,0 +1,29 @@
+{
+  "name": "@nekobato/nabecms-dev",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "run-p dev:worker dev:admin",
+    "dev:worker": "wrangler dev",
+    "dev:api": "pnpm run dev:worker",
+    "dev:admin": "pnpm -C ../nabecms-admin dev",
+    "build": "pnpm -C ../nabecms-admin build",
+    "deploy": "pnpm run build && pnpm nabecms:migrate --remote --env production && wrangler deploy --minify --env production",
+    "db:generate": "drizzle-kit generate --config drizzle.config.ts && pnpm nabecms:bundle-migrations",
+    "db:migrate:local": "pnpm nabecms:migrate --local",
+    "db:migrate:remote": "pnpm nabecms:migrate --remote --env production",
+    "db:reset:local": "rm -rf .wrangler/state && pnpm nabecms:migrate --local",
+    "nabecms:doctor": "nabecms doctor",
+    "nabecms:migrate": "nabecms migrate",
+    "nabecms:bundle-migrations": "nabecms bundle-migrations"
+  },
+  "dependencies": {
+    "@nekobato/nabecms-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@nekobato/nabecms-cli": "workspace:*",
+    "drizzle-kit": "0.31.11",
+    "npm-run-all2": "9.0.4",
+    "wrangler": "4.152.0"
+  }
+}

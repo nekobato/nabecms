@@ -1,0 +1,109 @@
+{
+  "name": "nabecms",
+  "version": "0.0.1",
+  "description": "Cloudflare-driven headless CMS monorepo",
+  "private": true,
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "run-p dev:worker dev:admin",
+    "dev:worker": "pnpm -C packages/dev run dev:worker",
+    "dev:api": "pnpm run dev:worker",
+    "dev:admin": "pnpm -C packages/nabecms-admin dev",
+    "build": "pnpm -C packages/nabecms-admin build && node scripts/sync-admin-assets.mjs",
+    "db:generate": "pnpm -C packages/dev run db:generate",
+    "db:migrate:local": "pnpm -C packages/dev run db:migrate:local",
+    "db:migrate:remote": "pnpm -C packages/dev run db:migrate:remote",
+    "db:reset:local": "pnpm -C packages/dev run db:reset:local",
+    "nabecms:doctor": "pnpm -C packages/dev run nabecms:doctor",
+    "nabecms:migrate": "pnpm -C packages/dev run nabecms:migrate",
+    "example:dev": "pnpm build && pnpm -C examples/basic run dev",
+    "example:doctor": "pnpm -C examples/basic run nabecms:doctor",
+    "example:migrate:local": "pnpm -C examples/basic run db:migrate:local",
+    "example:migrate:remote": "pnpm -C examples/basic run db:migrate:remote",
+    "docs:build": "pnpm -C docs run build",
+    "doctor": "pnpm run nabecms:doctor && pnpm run example:doctor",
+    "test": "pnpm run core:test && pnpm run admin:test && pnpm run cli:test && pnpm run starter:test && pnpm run tooling:test",
+    "security:audit": "pnpm audit --prod --audit-level=high",
+    "verify": "pnpm build && pnpm lint && pnpm format:check && pnpm typecheck && pnpm test && pnpm doctor",
+    "lint": "pnpm run core:lint && pnpm run admin:lint:ci",
+    "format": "pnpm run core:format && pnpm run admin:format",
+    "format:check": "pnpm -C packages/nabecms-core exec prettier --check src/ && pnpm -C packages/nabecms-admin exec prettier --check src/",
+    "typecheck": "pnpm run core:typecheck && pnpm run admin:typecheck",
+    "core:test": "pnpm -C packages/nabecms-core run test",
+    "core:test:watch": "pnpm -C packages/nabecms-core run test:watch",
+    "core:lint": "pnpm -C packages/nabecms-core run lint",
+    "core:format": "pnpm -C packages/nabecms-core run format",
+    "core:typecheck": "pnpm -C packages/nabecms-core run typecheck",
+    "admin:test": "pnpm -C packages/nabecms-admin run test",
+    "admin:test:e2e": "pnpm -C packages/nabecms-admin run test:e2e",
+    "admin:test:watch": "pnpm -C packages/nabecms-admin run test:watch",
+    "admin:lint": "pnpm -C packages/nabecms-admin run lint",
+    "admin:lint:ci": "pnpm -C packages/nabecms-admin run lint:ci",
+    "admin:format": "pnpm -C packages/nabecms-admin run format",
+    "admin:typecheck": "pnpm -C packages/nabecms-admin run typecheck",
+    "cli:test": "pnpm -C packages/nabecms-cli run test",
+    "starter:test": "pnpm -C packages/create-nabecms run test",
+    "tooling:test": "node --test scripts/admin-third-party-notices.test.mjs",
+    "package:smoke": "node scripts/package-smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekobato/nabecms.git"
+  },
+  "keywords": [
+    "nabecms",
+    "cloudflare",
+    "hono"
+  ],
+  "author": "nekobato",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nekobato/nabecms/issues"
+  },
+  "homepage": "https://github.com/nekobato/nabecms#readme",
+  "devDependencies": {
+    "@typescript/native": "npm:typescript@7.0.2",
+    "drizzle-kit": "0.31.11",
+    "npm-run-all2": "9.0.4",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "wrangler": "4.152.0"
+  },
+  "engines": {
+    "node": "^24.22.1 || ^26.12.1",
+    "pnpm": ">=11"
+  },
+  "cloudflare": {
+    "bindings": {
+      "DB": {
+        "description": "D1 database used for content, auth, and CMS settings."
+      },
+      "R2": {
+        "description": "Private R2 bucket used for uploaded media and generated variants."
+      },
+      "ASSETS": {
+        "description": "Workers Assets binding used to serve the Admin application at `/admin`."
+      },
+      "AUTH_LOGIN_RATE_LIMITER": {
+        "description": "Required Workers Rate Limiting binding for login attempts: 10 requests per 60 seconds."
+      },
+      "AUTH_SENSITIVE_RATE_LIMITER": {
+        "description": "Required Workers Rate Limiting binding for initialize and invite operations: 5 requests per 60 seconds."
+      },
+      "BETTER_AUTH_URL": {
+        "description": "Optional. Public base URL paired with `BETTER_AUTH_SECRET` for local Better Auth sessions."
+      },
+      "BETTER_AUTH_SECRET": {
+        "description": "Optional. Secret paired with `BETTER_AUTH_URL` for local Better Auth sessions. Generate one with `openssl rand -hex 32`."
+      },
+      "JWT_SECRET": {
+        "description": "Generate a random secret with `openssl rand -hex 32` for admin JWT signing."
+      },
+      "BOOTSTRAP_SECRET": {
+        "description": "One-time bootstrap secret required to create the first admin account."
+      }
+    }
+  }
+}
