@@ -5,11 +5,9 @@ This project includes code derived from the following third-party projects.
 ---
 
 ## punycode.js
-
 https://github.com/bestiejs/punycode.js
 
 Used in:
-
 - packages/json-schema/src/ucs2-length.ts
 
 License: MIT
@@ -38,11 +36,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ---
 
 ## ajv
-
 https://github.com/ajv-validator/ajv
 
 Used in:
-
 - packages/json-schema/src/format.ts
 
 License: MIT
