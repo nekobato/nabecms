@@ -69,7 +69,7 @@
     "drizzle-kit": "0.31.11",
     "npm-run-all2": "9.0.4",
     "typescript": "npm:@typescript/typescript6@6.0.2",
-    "wrangler": "4.152.0"
+    "wrangler": "4.156.1"
   },
   "engines": {
     "node": "^24.22.1 || ^26.12.1",
