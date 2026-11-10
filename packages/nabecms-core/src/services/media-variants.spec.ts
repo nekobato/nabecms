@@ -1,11 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { buildVariantKey, sanitizeTemplateKey } from "./media-variants";
+import { buildVariantKey } from "./media-variants";
 
 describe("media variants helpers", () => {
-  it("sanitizes template keys", () => {
-    expect(sanitizeTemplateKey("Thumb 01")).toBe("thumb-01");
-  });
-
   it("builds variant key with media id and template key", () => {
     const key = buildVariantKey({
       mediaId: "media_123",

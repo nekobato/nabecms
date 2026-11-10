@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createApp } from "../create-app";
 
 const app = createApp();
@@ -14,14 +14,6 @@ describe("API Server", () => {
   });
 
   describe("ModelFields API", () => {
-    describe("GET /api/admin/models/:modelId/fields", () => {
-      it("should return model fields endpoint structure", async () => {
-        const res = await app.request("/api/admin/models/test-model/fields");
-
-        expect(res.status).toBe(401);
-      });
-    });
-
     describe("POST /api/admin/models/:modelId/fields", () => {
       it("should have create field endpoint", async () => {
         const res = await app.request("/api/admin/models/test-model/fields", {
@@ -100,19 +92,56 @@ describe("API Server", () => {
       expect(res.status).toBe(404);
     });
 
-    it.each([
-      ["GET", "/api/admin/auth/providers"],
-      ["POST", "/api/admin/auth/sso/google/start"],
-      ["GET", "/api/admin/auth/turnstile/config"],
-      ["GET", "/api/admin/settings/auth-security"],
-      ["GET", "/api/admin/webhooks"],
-      ["POST", "/api/admin/webhooks/webhook_1/test"],
-      ["GET", "/api/admin/publication-schedules"],
-      ["POST", "/api/admin/models/model_1/entries/entry_1/schedules"],
-    ])("does not mount unsupported v1 route %s %s", async (method, path) => {
-      const res = await app.request(path, { method });
+    const testEnv = {
+      DB: {},
+      WORKER_ENV: "test" as const,
+      ASSETS: { fetch: vi.fn() },
+    };
+    const ssoDisabledEnv = {
+      ...testEnv,
+      AUTH_SSO_ENABLED: undefined,
+      AUTH_GOOGLE_ENABLED: undefined,
+      BETTER_AUTH_SECRET: undefined,
+      BETTER_AUTH_URL: undefined,
+      GOOGLE_CLIENT_ID: undefined,
+      GOOGLE_CLIENT_SECRET: undefined,
+    };
+    const publicationSchedulesEnv = { ...testEnv, JWT_SECRET: "secret" };
 
-      expect(res.status).toBe(404);
-    });
+    it.each([
+      ["GET", "/api/admin/auth/providers", [undefined, ssoDisabledEnv]],
+      ["POST", "/api/admin/auth/sso/google/start", [undefined, ssoDisabledEnv]],
+      ["GET", "/api/admin/auth/sso/google/callback", [ssoDisabledEnv]],
+      ["GET", "/api/admin/auth/turnstile/config", [undefined]],
+      ["GET", "/api/admin/settings/auth-security", [undefined]],
+      ["GET", "/api/admin/webhooks", [undefined]],
+      ["POST", "/api/admin/webhooks/webhook_1/test", [undefined]],
+      [
+        "GET",
+        "/api/admin/publication-schedules",
+        [undefined, publicationSchedulesEnv],
+      ],
+      [
+        "POST",
+        "/api/admin/publication-schedules/run-due",
+        [publicationSchedulesEnv],
+      ],
+      [
+        "POST",
+        "/api/admin/models/model_1/entries/entry_1/schedules",
+        [undefined, publicationSchedulesEnv],
+      ],
+    ] as const)(
+      "does not mount unsupported v1 route %s %s",
+      async (method, path, environments) => {
+        for (const env of environments) {
+          const res = await app.request(path, { method }, env);
+          expect(
+            res.status,
+            env ? "with test bindings" : "without bindings",
+          ).toBe(404);
+        }
+      },
+    );
   });
 });

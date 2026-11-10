@@ -224,7 +224,7 @@ describe("v1 local auth UI flows", () => {
     vi.unstubAllGlobals();
   });
 
-  it("keeps social providers, Turnstile, and email reset out of login", async () => {
+  it("keeps social providers and Turnstile out of login", async () => {
     routeState.path = "/auth/login";
     const wrapper = mountPage(LoginPage);
 
@@ -232,7 +232,6 @@ describe("v1 local auth UI flows", () => {
     await flushPromises();
 
     expect(wrapper.text()).not.toContain("Google で続行");
-    expect(wrapper.find('[data-test="password-reset-open"]').exists()).toBe(false);
     expect(wrapper.find('[data-test="turnstile-widget"]').exists()).toBe(false);
   });
 

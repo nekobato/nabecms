@@ -407,12 +407,17 @@ it("matches the source schema after applying 0000 through 0010 fresh and skips a
   expect(sessionColumns).toEqual(
     expect.arrayContaining([
       expect.objectContaining({ name: "id", pk: 1, type: "TEXT" }),
+      expect.objectContaining({ name: "user_id", notnull: 1, type: "TEXT" }),
       expect.objectContaining({ name: "token", notnull: 1, type: "TEXT" }),
       expect.objectContaining({
         name: "expires_at",
         notnull: 1,
         type: "INTEGER",
       }),
+      expect.objectContaining({ name: "ip_address", type: "TEXT" }),
+      expect.objectContaining({ name: "user_agent", type: "TEXT" }),
+      expect.objectContaining({ name: "created_at", type: "INTEGER" }),
+      expect.objectContaining({ name: "updated_at", type: "INTEGER" }),
     ]),
   );
 
@@ -435,16 +440,28 @@ it("matches the source schema after applying 0000 through 0010 fresh and skips a
   expect(accountColumns).toEqual(
     expect.arrayContaining([
       expect.objectContaining({ name: "id", pk: 1, type: "TEXT" }),
+      expect.objectContaining({ name: "user_id", notnull: 1, type: "TEXT" }),
       expect.objectContaining({
         name: "provider_id",
         notnull: 1,
         type: "TEXT",
+      }),
+      expect.objectContaining({ name: "account_id", notnull: 1, type: "TEXT" }),
+      expect.objectContaining({ name: "password_hash", type: "TEXT" }),
+      expect.objectContaining({
+        name: "access_token_expires_at",
+        type: "INTEGER",
+      }),
+      expect.objectContaining({
+        name: "refresh_token_expires_at",
+        type: "INTEGER",
       }),
       expect.objectContaining({
         name: "created_at",
         notnull: 1,
         type: "INTEGER",
       }),
+      expect.objectContaining({ name: "updated_at", type: "INTEGER" }),
     ]),
   );
 

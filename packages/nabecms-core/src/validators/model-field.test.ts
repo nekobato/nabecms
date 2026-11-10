@@ -318,7 +318,7 @@ describe("parseModelFieldPayload", () => {
     ).toThrowError("list item options are not supported");
   });
 
-  test.each(["media", "relation", "json"])(
+  test.each(["media", "relation", "json", "rich_text"])(
     "rejects complex list item type %s",
     (type) => {
       expect(() =>
@@ -334,20 +334,6 @@ describe("parseModelFieldPayload", () => {
       ).toThrow();
     },
   );
-
-  test("rejects rich text list items", () => {
-    expect(() =>
-      parseModelFieldPayload({
-        ...basePayload,
-        type: "list",
-        options: {
-          item: {
-            type: "rich_text",
-          },
-        },
-      }),
-    ).toThrow();
-  });
 
   test("rejects invalid field key format", () => {
     expect(() =>

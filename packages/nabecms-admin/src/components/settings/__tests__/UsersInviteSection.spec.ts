@@ -311,17 +311,6 @@ describe("UsersInviteSection", () => {
     wrapper.unmount();
   });
 
-  it("opens the invite form from the user invite action", async () => {
-    authorizedFetchMock.mockResolvedValueOnce(createResponse({ items: [] }));
-
-    const wrapper = mountComponent();
-    await flushPromises();
-
-    await wrapper.get('[data-testid="invite-user-button"]').trigger("click");
-
-    expect(wrapper.find("#invite-email").exists()).toBe(true);
-    expect(wrapper.html()).toContain("settings.invites.description");
-  });
   it("excludes Super Admin and system roles while preserving user-defined roles", async () => {
     authorizedFetchMock.mockResolvedValueOnce(createResponse({ items: [] }));
     const wrapper = mountComponent();
@@ -363,6 +352,7 @@ describe("UsersInviteSection", () => {
     await flushPromises();
 
     expect(document.body.querySelector(".el-dialog.invite-dialog")).not.toBeNull();
+    expect(document.body.querySelector(".el-dialog.invite-dialog #invite-email")).not.toBeNull();
     expect(document.body.querySelector(".el-select")).not.toBeNull();
     expect(document.body.textContent).toContain("settings.invites.description");
   });
