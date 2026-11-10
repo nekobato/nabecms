@@ -199,18 +199,24 @@ describe("admin model fields route authorization", () => {
     vi.restoreAllMocks();
   });
 
-  it("GET /api/admin/models/:modelId/fields returns 401 without token", async () => {
-    const res = await app.request(
-      "/api/admin/models/model_1/fields",
-      { method: "GET" },
-      env,
-    );
+  it.each([
+    { name: "with test bindings", modelId: "model_1", bindings: env },
+    { name: "without bindings", modelId: "test-model", bindings: undefined },
+  ])(
+    "GET /api/admin/models/:modelId/fields returns 401 without token ($name)",
+    async ({ modelId, bindings }) => {
+      const res = await app.request(
+        `/api/admin/models/${modelId}/fields`,
+        { method: "GET" },
+        bindings,
+      );
 
-    expect(res.status).toBe(401);
-    expect(await res.json()).toEqual({
-      error: { code: "UNAUTHORIZED", message: "Missing token" },
-    });
-  });
+      expect(res.status).toBe(401);
+      expect(await res.json()).toEqual({
+        error: { code: "UNAUTHORIZED", message: "Missing token" },
+      });
+    },
+  );
 
   it("GET /api/admin/models/:modelId/fields returns 403 when read permission is missing", async () => {
     vi.mocked(authLib.verifyAccessToken).mockResolvedValue({

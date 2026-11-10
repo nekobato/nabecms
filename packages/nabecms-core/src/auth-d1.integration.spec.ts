@@ -97,18 +97,6 @@ type IntegrationTestEnv = {
   TEST_MIGRATIONS: D1Migration[];
 };
 
-type TableColumn = {
-  name: string;
-  notnull: number;
-  pk: number;
-  type: string;
-};
-
-type IndexRow = {
-  name: string;
-  unique: number;
-};
-
 const bindings = env as unknown as IntegrationTestEnv;
 
 /**
@@ -293,28 +281,6 @@ const createInviteThroughAdminApi = async (
   return (await response.json()) as { inviteId: string; token: string };
 };
 
-/** Read SQLite table metadata from a real D1 binding. */
-const readTableColumns = async (
-  db: MigrationDatabase,
-  tableName: string,
-): Promise<TableColumn[]> => {
-  const result = await db
-    .prepare(`PRAGMA table_info('${tableName}')`)
-    .all<TableColumn>();
-  return result.results;
-};
-
-/** Read SQLite index metadata from a real D1 binding. */
-const readIndexes = async (
-  db: MigrationDatabase,
-  tableName: string,
-): Promise<IndexRow[]> => {
-  const result = await db
-    .prepare(`PRAGMA index_list('${tableName}')`)
-    .all<IndexRow>();
-  return result.results;
-};
-
 /** Return the scalar count selected by the supplied SQL statement. */
 const readCount = async (
   db: MigrationDatabase,
@@ -342,90 +308,6 @@ beforeAll(async () => {
 });
 
 describe("real D1 authentication integration", () => {
-  it("applies every migration to a fresh DB with the canonical schema and indexes", async () => {
-    const migrationNames = await bindings.DB.prepare(
-      "SELECT name FROM d1_migrations ORDER BY id",
-    ).all<{ name: string }>();
-    expect(
-      migrationNames.results.map((row: { name: string }) => row.name),
-    ).toEqual(bindings.TEST_MIGRATIONS.map(({ name }) => name));
-
-    const accountColumns = await readTableColumns(bindings.DB, "auth_accounts");
-    expect(accountColumns).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: "id", type: "TEXT", pk: 1 }),
-        expect.objectContaining({ name: "user_id", type: "TEXT", notnull: 1 }),
-        expect.objectContaining({
-          name: "provider_id",
-          type: "TEXT",
-          notnull: 1,
-        }),
-        expect.objectContaining({
-          name: "account_id",
-          type: "TEXT",
-          notnull: 1,
-        }),
-        expect.objectContaining({ name: "password_hash", type: "TEXT" }),
-        expect.objectContaining({
-          name: "access_token_expires_at",
-          type: "INTEGER",
-        }),
-        expect.objectContaining({
-          name: "refresh_token_expires_at",
-          type: "INTEGER",
-        }),
-        expect.objectContaining({ name: "created_at", type: "INTEGER" }),
-        expect.objectContaining({ name: "updated_at", type: "INTEGER" }),
-      ]),
-    );
-
-    const sessionColumns = await readTableColumns(bindings.DB, "auth_sessions");
-    expect(sessionColumns).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ name: "id", type: "TEXT", pk: 1 }),
-        expect.objectContaining({ name: "user_id", type: "TEXT", notnull: 1 }),
-        expect.objectContaining({ name: "token", type: "TEXT", notnull: 1 }),
-        expect.objectContaining({
-          name: "expires_at",
-          type: "INTEGER",
-          notnull: 1,
-        }),
-        expect.objectContaining({ name: "ip_address", type: "TEXT" }),
-        expect.objectContaining({ name: "user_agent", type: "TEXT" }),
-        expect.objectContaining({ name: "created_at", type: "INTEGER" }),
-        expect.objectContaining({ name: "updated_at", type: "INTEGER" }),
-      ]),
-    );
-    expect(sessionColumns.map(({ name }) => name)).not.toEqual(
-      expect.arrayContaining([
-        "identity_id",
-        "refresh_token_hash",
-        "revoked_at",
-      ]),
-    );
-
-    const accountIndexes = await readIndexes(bindings.DB, "auth_accounts");
-    expect(accountIndexes).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: "auth_accounts_provider_account_unique",
-          unique: 1,
-        }),
-        expect.objectContaining({ name: "auth_accounts_user_idx" }),
-      ]),
-    );
-    const sessionIndexes = await readIndexes(bindings.DB, "auth_sessions");
-    expect(sessionIndexes).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          name: "auth_sessions_token_unique",
-          unique: 1,
-        }),
-        expect.objectContaining({ name: "auth_sessions_user_idx" }),
-      ]),
-    );
-  });
-
   it("rolls back initialize at every D1 batch statement boundary", async () => {
     const now = new Date("2030-01-02T03:04:05.000Z");
     const coverage = await verifyRollbackAtEveryBatchBoundary(

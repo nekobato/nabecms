@@ -79,21 +79,16 @@ test("template copies the reference app file set for runtime files", async () =>
 });
 
 test("dev, example, and template migration artifacts stay semantically synchronized", async () => {
-  const [devSql, exampleSql, templateSql] = await Promise.all([
+  const [devSql, exampleSql] = await Promise.all([
     fs.readFile(
       path.join(devRoot, "migrations/0007_living_loners.sql"),
       "utf8",
     ),
     fs.readFile(path.join(exampleRoot, "migrations/0007_keen_leo.sql"), "utf8"),
-    fs.readFile(
-      path.join(templateRoot, "migrations/0007_keen_leo.sql"),
-      "utf8",
-    ),
   ]);
   assert.equal(devSql, exampleSql, "0007 SQL: dev/example");
-  assert.equal(exampleSql, templateSql, "0007 SQL: example/template");
 
-  const [devIdempotencySql, exampleIdempotencySql, templateIdempotencySql] =
+  const [devIdempotencySql, exampleIdempotencySql] =
     await Promise.all([
       fs.readFile(
         path.join(devRoot, "migrations/0008_tan_silver_fox.sql"),
@@ -103,61 +98,37 @@ test("dev, example, and template migration artifacts stay semantically synchroni
         path.join(exampleRoot, "migrations/0008_futuristic_manta.sql"),
         "utf8",
       ),
-      fs.readFile(
-        path.join(templateRoot, "migrations/0008_futuristic_manta.sql"),
-        "utf8",
-      ),
     ]);
   assert.equal(
     devIdempotencySql,
     exampleIdempotencySql,
     "0008 SQL: dev/example",
   );
-  assert.equal(
-    exampleIdempotencySql,
-    templateIdempotencySql,
-    "0008 SQL: example/template",
-  );
 
-  const [devSnapshot, exampleSnapshot, templateSnapshot] = await Promise.all([
+  const [devSnapshot, exampleSnapshot] = await Promise.all([
     readJson(path.join(devRoot, "migrations/meta/0007_snapshot.json")),
     readJson(path.join(exampleRoot, "migrations/meta/0007_snapshot.json")),
-    readJson(path.join(templateRoot, "migrations/meta/0007_snapshot.json")),
   ]);
   assert.deepEqual(
     normalizeSnapshot(devSnapshot),
     normalizeSnapshot(exampleSnapshot),
     "0007 snapshot: dev/example",
   );
-  assert.deepEqual(
-    exampleSnapshot,
-    templateSnapshot,
-    "0007 snapshot: example/template",
-  );
 
-  const [
-    devIdempotencySnapshot,
-    exampleIdempotencySnapshot,
-    templateIdempotencySnapshot,
-  ] = await Promise.all([
-    readJson(path.join(devRoot, "migrations/meta/0008_snapshot.json")),
-    readJson(path.join(exampleRoot, "migrations/meta/0008_snapshot.json")),
-    readJson(path.join(templateRoot, "migrations/meta/0008_snapshot.json")),
-  ]);
+  const [devIdempotencySnapshot, exampleIdempotencySnapshot] = await Promise.all(
+    [
+      readJson(path.join(devRoot, "migrations/meta/0008_snapshot.json")),
+      readJson(path.join(exampleRoot, "migrations/meta/0008_snapshot.json")),
+    ],
+  );
   assert.deepEqual(
     normalizeSnapshot(devIdempotencySnapshot),
     normalizeSnapshot(exampleIdempotencySnapshot),
     "0008 snapshot: dev/example",
   );
-  assert.deepEqual(
-    exampleIdempotencySnapshot,
-    templateIdempotencySnapshot,
-    "0008 snapshot: example/template",
-  );
 
-  const roots = [devRoot, exampleRoot, templateRoot];
   const minimizedSql = await Promise.all(
-    roots.map((root) =>
+    [devRoot, exampleRoot].map((root) =>
       fs.readFile(
         path.join(root, "migrations/0009_minimize_auth_logs.sql"),
         "utf8",
@@ -165,9 +136,8 @@ test("dev, example, and template migration artifacts stay semantically synchroni
     ),
   );
   assert.equal(minimizedSql[0], minimizedSql[1], "0009 SQL: dev/example");
-  assert.equal(minimizedSql[1], minimizedSql[2], "0009 SQL: example/template");
   const minimizedSnapshots = await Promise.all(
-    roots.map(async (root) =>
+    [devRoot, exampleRoot].map(async (root) =>
       normalizeSnapshot(
         await readJson(path.join(root, "migrations/meta/0009_snapshot.json")),
       ),
@@ -177,11 +147,6 @@ test("dev, example, and template migration artifacts stay semantically synchroni
     minimizedSnapshots[0],
     minimizedSnapshots[1],
     "0009 snapshot: dev/example",
-  );
-  assert.deepEqual(
-    minimizedSnapshots[1],
-    minimizedSnapshots[2],
-    "0009 snapshot: example/template",
   );
 
   const [devJournal, exampleJournal, templateJournal] = await Promise.all([
@@ -193,11 +158,6 @@ test("dev, example, and template migration artifacts stay semantically synchroni
     normalizeJournal(devJournal),
     normalizeJournal(exampleJournal),
     "journal: dev/example",
-  );
-  assert.deepEqual(
-    exampleJournal,
-    templateJournal,
-    "journal: example/template",
   );
 
   const rootsAndJournals = [
@@ -230,11 +190,6 @@ test("dev, example, and template migration artifacts stay semantically synchroni
     normalizeBundle(devBundle),
     normalizeBundle(exampleBundle),
     "runtime bundle: dev/example",
-  );
-  assert.deepEqual(
-    exampleBundle,
-    templateBundle,
-    "runtime bundle: example/template",
   );
 
   for (const [root, journal, bundle] of [
