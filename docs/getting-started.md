@@ -5,7 +5,7 @@ Wrangler runs D1 and R2 locally, so you can try the CMS before creating Cloudfla
 
 ## Prerequisites
 
-Use Node.js 24.22.1 or later within 24.x, or 26.12.1 or later within 26.x, and pnpm 11 or later.
+Use Node.js 24.22.3 or later within 24.x, or 26.13.1 or later within 26.x, and pnpm 11 or later.
 The initializer includes Wrangler in the app's dependencies.
 A Cloudflare account is needed when you [deploy the app](./operations.md).
 
